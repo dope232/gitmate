@@ -82,6 +82,46 @@ fn branch_and_switch(branch_name: &str) {
     println!("Switched to branch {}", branch_name);
 }
 
+fn commit_update_push_branch(commit_message: &str,branch_name: &str ) {
+    let add_command = Command::new("git")
+        .arg("add")
+        .arg("-A")
+        .output()
+        .expect("Failed to execute git add command");
+
+    if !add_command.status.success() {
+        eprintln!("Failed to add files to the git repo");
+        exit(1);
+    }
+
+    let commit_command = Command::new("git")
+        .arg("commit")
+        .arg("-m")
+        .arg(commit_message)
+        .output()
+        .expect("Failed to execute git commit command");
+
+    if !commit_command.status.success() {
+        eprintln!("Error: Failed to commit changes.");
+        exit(1);
+    }
+
+    let push_command = Command::new("git")
+        .arg("push")
+        .arg("-u")
+        .arg("origin")
+        .arg(branch_name)
+        .output()
+        .expect("Failed to execute git push command");
+
+    if !push_command.status.success() {
+        eprintln!("Failed to push files to the git repo");
+        exit(1);
+    }
+
+    println!("Successfully committed and pushed to the branch");
+}
+
 fn main() {
     let args: Vec<String> = std::env::args().collect();
 
