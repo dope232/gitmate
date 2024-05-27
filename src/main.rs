@@ -80,9 +80,12 @@ fn branch_and_switch(branch_name: &str) {
     }
 
     println!("Switched to branch {}", branch_name);
+
+    // Push changes to the newly created branch
+    commit_update_push_branch("Initial commit", branch_name);
 }
 
-fn commit_update_push_branch(commit_message: &str,branch_name: &str ) {
+fn commit_update_push_branch(commit_message: &str, branch_name: &str) {
     let add_command = Command::new("git")
         .arg("add")
         .arg("-A")
